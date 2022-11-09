@@ -2,6 +2,7 @@ import random
 from logic import make_empty_board, other_player, get_winner
 from typing import Tuple
 from board_printer import BoardPrinter
+import utils
 
 
 class Game:
@@ -67,7 +68,7 @@ class SingleModeGame(Game):
                     _x = input("Enter Coordinate For Row (zero-index): ")
                     _y = input("Enter Coordinate For Col (zero-index): ")
 
-                    valid_input = validate_input(self.board, _x, _y)
+                    valid_input = utils.validate_input(self.board, _x, _y)
 
                     if not valid_input:
                         print("INVALID INPUT. PLEASE RE-ENTER.")
@@ -116,7 +117,7 @@ class TwoPlayerModeGame(Game):
                 _x = input("Enter Coordinate For Row (zero-index): ")
                 _y = input("Enter Coordinate For Col (zero-index): ")
 
-                valid_input = validate_input(board, _x, _y)
+                valid_input = utils.validate_input(self.board, _x, _y)
 
                 if not valid_input:
                     print("INVALID INPUT. PLEASE RE-ENTER.")
@@ -134,7 +135,7 @@ class TwoPlayerModeGame(Game):
             # Update who's turn it is.
             self.current_player = other_player(self.current_player)
 
-            self.winner = get_winner(board)
+            self.winner = get_winner(self.board)
 
             print("---------------------------------------")
 
