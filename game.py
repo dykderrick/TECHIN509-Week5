@@ -15,6 +15,9 @@ class Game:
     def get_board(self):
         return self.board
 
+    def set_board(self, x: int, y: int, player: str):
+        self.board[x][y] = player
+
     def get_winner(self):
         return self.winner
 
@@ -77,7 +80,7 @@ class SingleModeGame(Game):
 
                 # Update the board.
                 coordinate = (int(_x), int(_y))
-                self.board[coordinate[0]][coordinate[1]] = "X"  # User always takes O
+                self.set_board(coordinate[0], coordinate[1], "X")  # User always takes O
 
             # Print the board
             print("CURRENT BOARD: ")
@@ -126,7 +129,7 @@ class TwoPlayerModeGame(Game):
 
             # Update the board.
             coordinate = (int(_x), int(_y))
-            self.board[coordinate[0]][coordinate[1]] = self.current_player
+            self.set_board(coordinate[0], coordinate[1], self.current_player)
 
             # Print the board
             print("CURRENT BOARD: ")
