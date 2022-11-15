@@ -1,22 +1,16 @@
 import random
-from logic import make_empty_board, other_player, get_winner
+from logic import other_player, get_winner
 from typing import Tuple
-from board_printer import BoardPrinter
+from board import Board
 import utils
 
 
 class Game:
     def __init__(self):
         self.game_mode = 0  # 1 means one-gamer (user vs bot), 2 means two-player (user vs user)
-        self.board = make_empty_board()
+        self.board = Board()
         self.players = ["X", other_player("X")]
         self.winner = None
-
-    def get_board(self):
-        return self.board
-
-    def set_board(self, x: int, y: int, player: str):
-        self.board[x][y] = player
 
     def get_winner(self):
         return self.winner
@@ -35,7 +29,7 @@ class SingleModeGame(Game):
 
         for i in range(3):
             for j in range(3):
-                if self.board[i][j] is None:
+                if self.board.get_board_element(i, j) is None:
                     space.append((i, j))
 
         return space
@@ -54,14 +48,14 @@ class SingleModeGame(Game):
 
                 print("Bot takes " + str(bot_step))
 
-                self.board[bot_step[0]][bot_step[1]] = "O"  # bot always takes O
+                self.board.set_board(bot_step[0], bot_step[1], "O")  # bot always takes O
 
             else:
                 print("Player takes a turn!")
 
                 # Show the board to the user.
                 print("CURRENT BOARD: ")
-                BoardPrinter(self.board).print_board()
+                print(self.board)
 
                 # Input a move from the player.
                 valid_input = False
@@ -71,7 +65,7 @@ class SingleModeGame(Game):
                     _x = input("Enter Coordinate For Row (zero-index): ")
                     _y = input("Enter Coordinate For Col (zero-index): ")
 
-                    valid_input = utils.validate_input(self.board, _x, _y)
+                    valid_input = utils.validate_input(self.board.get_board(), _x, _y)
 
                     if not valid_input:
                         print("INVALID INPUT. PLEASE RE-ENTER.")
@@ -80,16 +74,16 @@ class SingleModeGame(Game):
 
                 # Update the board.
                 coordinate = (int(_x), int(_y))
-                self.set_board(coordinate[0], coordinate[1], "X")  # User always takes O
+                self.board.set_board(coordinate[0], coordinate[1], "X")  # User always takes O
 
             # Print the board
             print("CURRENT BOARD: ")
-            BoardPrinter(self.board).print_board()
+            print(self.board)
 
             # Update who's turn it is.
             self.is_user_turn = not self.is_user_turn
 
-            self.winner = get_winner(self.board)
+            self.winner = get_winner(self.board.get_board())
 
             print("---------------------------------------")
 
@@ -110,7 +104,7 @@ class TwoPlayerModeGame(Game):
 
             # Show the board to the user.
             print("CURRENT BOARD: ")
-            BoardPrinter(self.board).print_board()
+            print(self.board)
 
             # Input a move from the player.
             valid_input = False
@@ -120,7 +114,7 @@ class TwoPlayerModeGame(Game):
                 _x = input("Enter Coordinate For Row (zero-index): ")
                 _y = input("Enter Coordinate For Col (zero-index): ")
 
-                valid_input = utils.validate_input(self.board, _x, _y)
+                valid_input = utils.validate_input(self.board.get_board(), _x, _y)
 
                 if not valid_input:
                     print("INVALID INPUT. PLEASE RE-ENTER.")
@@ -129,16 +123,16 @@ class TwoPlayerModeGame(Game):
 
             # Update the board.
             coordinate = (int(_x), int(_y))
-            self.set_board(coordinate[0], coordinate[1], self.current_player)
+            self.board.set_board(coordinate[0], coordinate[1], self.current_player)
 
             # Print the board
             print("CURRENT BOARD: ")
-            BoardPrinter(self.board).print_board()
+            print(self.board)
 
             # Update who's turn it is.
             self.current_player = other_player(self.current_player)
 
-            self.winner = get_winner(self.board)
+            self.winner = get_winner(self.board.get_board())
 
             print("---------------------------------------")
 

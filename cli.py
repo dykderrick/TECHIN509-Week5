@@ -33,7 +33,7 @@ if __name__ == '__main__':
         print("You are on Two Player Mode")
         game = TwoPlayerModeGame()
 
-    board = game.get_board()
+    board = game.board.get_board()
     winner = game.get_winner()
 
     current_player = "X"
