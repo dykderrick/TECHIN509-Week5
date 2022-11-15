@@ -2,6 +2,7 @@ import unittest
 import logic
 import utils
 from game import SingleModeGame
+from board import Board
 
 
 class TestLogic(unittest.TestCase):
@@ -27,7 +28,9 @@ class TestLogic(unittest.TestCase):
             [None, None, None],
         ]
 
-        self.assertEqual(logic.make_empty_board(), correct_board)
+        board = Board()
+
+        self.assertEqual(board.get_board(), correct_board)
 
     def test_other_player(self):
         """
@@ -72,9 +75,9 @@ class TestGame(unittest.TestCase):
         :return:
         """
         game = SingleModeGame()
-        game.set_board(0, 0, "X")
-        game.set_board(0, 1, "O")
-        game.set_board(0, 2, "X")
+        game.board.set_board(0, 0, "X")
+        game.board.set_board(0, 1, "O")
+        game.board.set_board(0, 2, "X")
 
         # Bot's next step should be in a list with (0, 0), (0, 1) and (0, 2) excluded.
         self.assertIn(game.bot_random_step(), [(1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)])
