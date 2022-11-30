@@ -1,12 +1,14 @@
 import random
 import uuid
-
-from logic import get_winner
-from typing import Tuple
-from board import Board
-from player import Player
-from log import Logger
 import utils
+
+from typing import Tuple
+
+from board import Board
+from log import Logger
+from logic import get_winner
+from player import Player
+from statistics import GlobalRank
 
 
 class Game:
@@ -127,6 +129,8 @@ class SingleModeGame(Game):
 
         Logger(self).log()
 
+        print(GlobalRank())
+
 
 class TwoPlayerModeGame(Game):
     def __init__(self):
@@ -210,3 +214,5 @@ class TwoPlayerModeGame(Game):
             print("GAME OVER. " + self.winner + " WINS.")
 
         Logger(self).log()
+
+        print(GlobalRank())
