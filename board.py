@@ -22,8 +22,16 @@ class Board:
 
         return rows
 
-    def set_board(self, x: int, y: int, player: str):
-        self.board[x][y] = player
+    def set_board(self, x: int, y: int, player_symbol: str):
+        """
+        Set board element at (x, y) to a specific symbol (either X or O).
+
+        :param x: the x coordinate of board to set
+        :param y: the y coordinate of board to set
+        :param player_symbol: either X or O
+        :return: None
+        """
+        self.board[x][y] = player_symbol
 
     def get_board_element(self, i: int, j: int):
         return self.board[i][j]

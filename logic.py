@@ -3,6 +3,17 @@
 # should be unit-testable.
 
 
+def get_board_filled_num(board):
+    num = 0
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] is not None:
+                num += 1
+
+    return num
+
+
 def get_winner(board):
     """Determines the winner of the given board.
     Returns 'X', 'O', or None."""
@@ -52,7 +63,7 @@ def get_winner(board):
                     return "O"
 
     # Otherwise let the game continue
-    return None
+    return None if get_board_filled_num(board) != 9 else "DRAW"
 
 
 def other_player(player):

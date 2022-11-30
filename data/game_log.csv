@@ -1,0 +1,6 @@
+game_id,playerX_username,playerO_username,game_result
+52564333-c76e-4050-9133-22bac425a68b,alice,bob,X
+be955da8-d697-44a7-8c97-6383b50fa6be,dykderrick,bob,X
+6b7258fc-e4cd-4c01-a3bc-2b14b5693148,dykderrick,alice,X
+03488c73-038c-4e2e-855f-e6c83d2b8209,alice,bob,DRAW
+870cd15a-f4fd-4982-8a4c-3e14c3f68c2d,dykderrick,BOT,X

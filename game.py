@@ -1,19 +1,33 @@
 import random
-from logic import other_player, get_winner
+import uuid
+
+from logic import get_winner
 from typing import Tuple
 from board import Board
+from player import Player
+from log import Logger
 import utils
 
 
 class Game:
     def __init__(self):
+        self.game_id = uuid.uuid4()
         self.game_mode = 0  # 1 means one-gamer (user vs bot), 2 means two-player (user vs user)
         self.board = Board()
-        self.players = ["X", other_player("X")]
+        self.players = []
         self.winner = None
+
+    def add_player(self, player: Player):
+        self.players.append(player)
 
     def get_winner(self):
         return self.winner
+
+    def get_players(self):
+        return self.players
+
+    def get_game_id(self):
+        return self.game_id
 
     def game_interface(self):
         pass
@@ -40,6 +54,14 @@ class SingleModeGame(Game):
         return _empty_space[random.randint(0, len(_empty_space) - 1)]
 
     def game_interface(self):
+        _username = input("X, Please enter your username: ")
+
+        x_player = Player(player_username=_username, is_x=True, is_bot=False)
+        o_player = Player(player_username=_username, is_x=False, is_bot=True)
+
+        self.add_player(x_player)  # user is the first player
+        self.add_player(o_player)
+
         while self.winner is None:
             if not self.is_user_turn:
                 print("Bot takes a turn!")
@@ -51,7 +73,7 @@ class SingleModeGame(Game):
                 self.board.set_board(bot_step[0], bot_step[1], "O")  # bot always takes O
 
             else:
-                print("Player takes a turn!")
+                print(str(self.players[0]) + " takes a turn!")
 
                 # Show the board to the user.
                 print("CURRENT BOARD: ")
@@ -87,20 +109,38 @@ class SingleModeGame(Game):
 
             print("---------------------------------------")
 
-        if self.winner is not None:
-            print("GAME OVER. " + self.winner + " WINS.")
-        else:
+        if self.winner == "DRAW":
             print("GAME OVER. DRAW.")
+        else:
+            print("GAME OVER. " + self.winner + " WINS.")
+
+        Logger(self).log()
 
 
 class TwoPlayerModeGame(Game):
     def __init__(self):
         super().__init__()
-        self.current_player = "X"
+        self.current_player = None
+        self.current_player_index = -1
 
     def game_interface(self):
+
+        # TODO: add input validation
+        _x_username = input("X, Please enter your username: ")
+        _o_username = input("O, Please enter your username: ")
+
+        x_player = Player(player_username=_x_username, is_x=True, is_bot=False)
+        o_player = Player(player_username=_o_username, is_x=False, is_bot=False)
+
+        self.add_player(x_player)
+        self.add_player(o_player)
+
+        current_player_index = 0  # x_player
+        self.current_player = self.players[current_player_index]
+
+        # business logic starts here
         while self.winner is None:
-            print(self.current_player + " take a turn!")
+            print(str(self.current_player) + " takes a turn!")
 
             # Show the board to the user.
             print("CURRENT BOARD: ")
@@ -123,20 +163,23 @@ class TwoPlayerModeGame(Game):
 
             # Update the board.
             coordinate = (int(_x), int(_y))
-            self.board.set_board(coordinate[0], coordinate[1], self.current_player)
+            self.board.set_board(coordinate[0], coordinate[1], self.current_player.get_player_symbol())
 
             # Print the board
             print("CURRENT BOARD: ")
             print(self.board)
 
             # Update who's turn it is.
-            self.current_player = other_player(self.current_player)
+            current_player_index ^= 1  # XOR with 1 to toggle
+            self.current_player = self.players[current_player_index]
 
             self.winner = get_winner(self.board.get_board())
 
             print("---------------------------------------")
 
-        if self.winner is not None:
-            print("GAME OVER. " + self.winner + " WINS.")
-        else:
+        if self.winner == "DRAW":
             print("GAME OVER. DRAW.")
+        else:
+            print("GAME OVER. " + self.winner + " WINS.")
+
+        Logger(self).log()
