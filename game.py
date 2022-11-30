@@ -54,7 +54,18 @@ class SingleModeGame(Game):
         return _empty_space[random.randint(0, len(_empty_space) - 1)]
 
     def game_interface(self):
-        _username = input("X, Please enter your username: ")
+        _is_valid_username = False
+        _username = ""
+
+        while not _is_valid_username:
+            _username = input("X, Please enter your username: ")
+
+            _is_valid_username = utils.validate_username(_username)
+
+            if not _is_valid_username:
+                print("USERNAME CANNOT BE BOT. PLEASE TRY AGAIN.")
+
+        print("X Player: " + _username)
 
         x_player = Player(player_username=_username, is_x=True, is_bot=False)
         o_player = Player(player_username=_username, is_x=False, is_bot=True)
@@ -124,10 +135,26 @@ class TwoPlayerModeGame(Game):
         self.current_player_index = -1
 
     def game_interface(self):
+        _is_valid_x_username, _is_valid_o_username = False, False
+        _x_username, _o_username = "", ""
 
-        # TODO: add input validation
-        _x_username = input("X, Please enter your username: ")
-        _o_username = input("O, Please enter your username: ")
+        while not _is_valid_x_username:
+            _x_username = input("X, Please enter your username: ")
+            _is_valid_x_username = utils.validate_username(_x_username)
+
+            if not _is_valid_x_username:
+                print("USERNAME CANNOT BE BOT. PLEASE TRY AGAIN.")
+
+        print("X Player: " + _x_username)
+
+        while not _is_valid_o_username:
+            _o_username = input("O, Please enter your username: ")
+            _is_valid_o_username = utils.validate_username(_o_username)
+
+            if not _is_valid_o_username:
+                print("USERNAME CANNOT BE BOT. PLEASE TRY AGAIN.")
+
+        print("O Player: " + _o_username)
 
         x_player = Player(player_username=_x_username, is_x=True, is_bot=False)
         o_player = Player(player_username=_o_username, is_x=False, is_bot=False)

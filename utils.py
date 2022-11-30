@@ -35,3 +35,7 @@ def validate_input(board: List[List[str]], user_input_x: str, user_input_y: str)
         return False
 
     return 0 <= x_coordinate <= 2 and 0 <= y_coordinate <= 2 and board[x_coordinate][y_coordinate] is None
+
+
+def validate_username(username: str) -> bool:
+    return username != "BOT"
